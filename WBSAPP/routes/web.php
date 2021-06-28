@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\User_test;
 use App\Http\Controllers\EntranceController;
+use App\Http\Controllers\DashboardController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -26,3 +27,4 @@ Route::get('/', [EntranceController::class, 'Login_index'])->name('login.index')
 Route::post('/', [EntranceController::class, 'Login_submit'])->name('login.submit');
 Route::get('/register', [EntranceController::class, 'Regist_index'])->name('register.index');
 Route::post('/register', [EntranceController::class, 'Regist_submit'])->name('register.submit');
+Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard.index');
