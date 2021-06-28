@@ -91,11 +91,8 @@
 
   let myPathBox = document.getElementById("myPath").getBBox();
   let myPathBox2 = document.getElementById("myPath").getBoundingClientRect().width;
-  console.log(myPathBox);
-  console.log(myPathBox2);
-  
-
-
+//   console.log(myPathBox);
+//   console.log(myPathBox2);
 </script>
 
 </html>
