@@ -4,17 +4,15 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\Users_task;
+use App\Models\Project;
 
-class Task extends Model
+class Project_type extends Model
 {
     use HasFactory;
-
-    protected $table = 'tasks';
+    protected $table = 'projects_type';
     public $timestamps = false;
-
-    public function users_task()
+    public function projects()
     {
-        return $this->hasMany(Users_task::class, 'task_id');
+        return $this->hasMany(Project::class, 'type_id');
     }
 }

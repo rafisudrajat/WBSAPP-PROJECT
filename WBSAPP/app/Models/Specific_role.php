@@ -10,8 +10,9 @@ class Specific_role extends Model
 {
     use HasFactory;
     protected $table = 'specific_roles';
+    public $timestamps = false;
     public function users()
     {
-        return $this->belongsToMany(User::class, 'users_specific_roles', 'spec_role_id');
+        return $this->belongsToMany(User::class, 'users_specific_roles', 'spec_role_id', 'user_id');
     }
 }

@@ -8,8 +8,9 @@ use Illuminate\Support\Facades\Hash;
 
 class EntranceController extends Controller
 {
-    public function Regist_index()
+    public function Regist_index(Request $request)
     {
+        // dd($request->path());
         return view('register', ['title' => 'Register']);
     }
 
@@ -35,8 +36,9 @@ class EntranceController extends Controller
         }
     }
 
-    public function Login_index()
+    public function Login_index(Request $request)
     {
+        // dd($request->path());
         return view('login', ['title' => 'Login']);
     }
 
@@ -57,6 +59,14 @@ class EntranceController extends Controller
             } else {
                 return back()->with('fail', "Incorrect Password or Email");
             }
+        }
+    }
+
+    public function logout()
+    {
+        if (session()->has('UserLogged')) {
+            session()->forget('UserLogged');
+            return redirect('/');
         }
     }
 }

@@ -18,13 +18,20 @@ use App\Http\Controllers\DashboardController;
 // Route::get('/', function () {
 //     return view('login');
 // });
-
+// For Testing
 Route::get('/testrole', [User_test::class, 'addSPRole']);
 Route::get('/testuser', [User_test::class, 'addUser']);
 
-Route::get('/', [EntranceController::class, 'Login_index'])->name('login.index');
 
 Route::post('/', [EntranceController::class, 'Login_submit'])->name('login.submit');
-Route::get('/register', [EntranceController::class, 'Regist_index'])->name('register.index');
 Route::post('/register', [EntranceController::class, 'Regist_submit'])->name('register.submit');
-Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard.index');
+
+Route::get('/logout', [EntranceController::class, 'logout'])->name('logout');
+Route::get('/addNewProject', [DashboardController::class, 'NewProjectForm'])->name('dashboard.NewProjectForm');
+Route::post('/addNewProject', [DashboardController::class, 'SubmitNewProject'])->name('dashboard.SubmitNewProject');
+
+Route::group(['middleware' => ['AuthCheck']], function () {
+    Route::get('/register', [EntranceController::class, 'Regist_index'])->name('register.index');
+    Route::get('/', [EntranceController::class, 'Login_index'])->name('login.index');
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard.index');
+});

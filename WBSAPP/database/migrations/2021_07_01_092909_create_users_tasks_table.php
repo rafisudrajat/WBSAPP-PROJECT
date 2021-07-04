@@ -23,7 +23,6 @@ class CreateUsersTasksTable extends Migration
             $table->foreign('task_id')->references('id')->on('tasks')->onDelete('cascade');
         });
     }
-
     /**
      * Reverse the migrations.
      *
