@@ -5,7 +5,11 @@ module.exports = {
     extend: {
       maxWidth: {
         'but-s': '145px',
-       }
+       },
+      flexGrow: {
+        '2': 2,
+        '3':3
+      }
     },
     
   },

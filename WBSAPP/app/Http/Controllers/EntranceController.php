@@ -27,6 +27,7 @@ class EntranceController extends Controller
         $user->name = $data['fullname'];
         $user->email = $data['email'];
         $user->password = Hash::make($data['password']);
+        // TO DO: Change default general_role to NonAdmin
         $user->general_role = 'Admin';
         $save = $user->save();
         if ($save) {
