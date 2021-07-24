@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\User_test;
 use App\Http\Controllers\EntranceController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\DetailProject;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -36,4 +37,6 @@ Route::group(['middleware' => ['AuthCheck']], function () {
     Route::post('/addNewProject', [DashboardController::class, 'SubmitNewProject'])->name('dashboard.SubmitNewProject');
     Route::post('/addProjectType', [DashboardController::class, 'add_ProjectType'])->name('dashboard.add_ProjectType');
     Route::post('/addProjectCategory', [DashboardController::class, 'add_ProjectCategory'])->name('dashboard.add_ProjectCategory');
+    Route::get('/projectDetails', [DetailProject::class, 'index'])->name('detailProject');
+    Route::get('/searchMember', [DetailProject::class, 'searchMember'])->name('searchMember');
 });

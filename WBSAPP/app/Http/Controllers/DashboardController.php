@@ -18,7 +18,8 @@ class DashboardController extends Controller
             'title' => 'Dashboard',
             'project_name' => [],
             'project_category' => [],
-            'project_type' => []
+            'project_type' => [],
+            'project_id' => []
         ];
         foreach ($projects as $project) {
             // echo $project;
@@ -27,6 +28,7 @@ class DashboardController extends Controller
             array_push($data['project_name'], $project['project_name']);
             array_push($data['project_category'], $project_category['project_category_name']);
             array_push($data['project_type'], $project_type['project_type_name']);
+            array_push($data['project_id'], $project['id']);
         }
         // dd($data);
         return view('dashboard', $data);

@@ -82,7 +82,7 @@
    @include('Modals.addProjectCT')
    
     
-    <script>
+    <script type="text/javascript">
         window.addEventListener('DOMContentLoaded', () =>{
             const overlay = document.querySelector('#overlay')
             const newProjectType = document.querySelector('#newProjectType')

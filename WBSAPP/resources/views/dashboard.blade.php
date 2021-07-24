@@ -24,7 +24,10 @@
           </p>
         </div>
         <div class="self-end pr-2 ">
-          <button type="button" class="underline">See project details</button>
+          <form action="/projectDetails" method="GET">
+            <input type="hidden" name="project_id" value="{{$project_id[$i]}}">
+            <button type="submit" class="underline"> See project details </button>
+          </form>
         </div>
       </div>
     @endfor
