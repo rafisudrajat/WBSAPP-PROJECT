@@ -20,8 +20,8 @@ use App\Http\Controllers\DetailProject;
 //     return view('login');
 // });
 // For Testing
-Route::get('/testrole', [User_test::class, 'addSPRole']);
-Route::get('/testuser', [User_test::class, 'addUser']);
+// Route::get('/testrole', [User_test::class, 'addSPRole']);
+// Route::get('/testuser', [User_test::class, 'addUser']);
 
 
 Route::post('/', [EntranceController::class, 'Login_submit'])->name('login.submit');
@@ -38,5 +38,9 @@ Route::group(['middleware' => ['AuthCheck']], function () {
     Route::post('/addProjectType', [DashboardController::class, 'add_ProjectType'])->name('dashboard.add_ProjectType');
     Route::post('/addProjectCategory', [DashboardController::class, 'add_ProjectCategory'])->name('dashboard.add_ProjectCategory');
     Route::get('/projectDetails', [DetailProject::class, 'index'])->name('detailProject');
-    Route::get('/searchMember', [DetailProject::class, 'searchMember'])->name('searchMember');
+    Route::get('/searchMember', [DetailProject::class, 'searchMember'])->name('detailProject.searchMember');
+    Route::post('/addMember', [DetailProject::class, 'addMember'])->name('detailProject.addMember');
+    Route::post('/delMember', [DetailProject::class, 'deleteMember'])->name('detailProject.delMember');
+    Route::get('/queryCT', [DetailProject::class, 'queryCategory_Type'])->name('detailProject.queryCT');
+    Route::post('/editProject', [DetailProject::class, 'editProject'])->name('detailProject.editProject');
 });

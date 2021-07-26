@@ -79,7 +79,7 @@
         </div>
     </div>
 
-   @include('Modals.addProjectCT')
+   @include('Modals.editProject')
    
     
     <script type="text/javascript">

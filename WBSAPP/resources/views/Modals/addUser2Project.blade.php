@@ -1,8 +1,8 @@
-<div class="bg-black bg-opacity-50 absolute inset-0 hidden justify-center items-center" id="overlay">
+<div class="bg-black bg-opacity-50 absolute inset-0 hidden justify-center items-center" id="overlay1">
     <!-- component -->
     <div class="w-full max-w-screen-xl mx-auto px-6">
         <div class="flex justify-center p-4 px-3 py-10">
-            <div class="w-full max-w-xl">
+            <div class="w-full max-w-xl max-h-lg">
                 <div class="bg-white shadow-md rounded-lg px-3 py-2 mb-4">
                     <div class="block text-gray-700 text-lg font-semibold py-2 px-2">
                         User List
@@ -25,22 +25,25 @@
                     
                     </div>
                     <div class="py-3 text-sm">
-                        {{-- User List --}}
-                        <div class="flex justify-start cursor-pointer text-gray-700 hover:text-blue-400 hover:bg-blue-100 rounded-md px-2 py-2 my-2">
-                            <span class="bg-gray-400 h-2 w-2 m-2 rounded-full"></span>
-                            <div class="flex-grow font-medium px-2">Tighten Co.</div>
-                            <div class="text-sm font-normal text-gray-500 tracking-wide">Team</div>
-                        </div>
-                        <div class="flex justify-start cursor-pointer text-gray-700 hover:text-blue-400 hover:bg-blue-100 rounded-md px-2 py-2 my-2">
-                            <span class="bg-green-400 h-2 w-2 m-2 rounded-full"></span>
-                            <div class="flex-grow font-medium px-2">Taylor Otwell</div>
-                            <div class="text-sm font-normal text-gray-500 tracking-wide">Member</div>
-                        </div>
-    
+                        {{-- Member List --}}
+                        @foreach ($members as $member)
+                            <div class="flex justify-start cursor-pointer text-gray-700 hover:text-blue-400 hover:bg-blue-100 rounded-md px-2 py-2 my-2">
+                                <span class="bg-gray-400 h-2 w-2 m-2 rounded-full"></span>
+                                <div class="flex-grow font-medium px-2">{{$member['name']}}</div>
+                                <form action="/delMember" method="POST">
+                                    @csrf
+                                    <input type="hidden" name="user_id" value="{{$member['id']}}" >
+                                    <input type="hidden" name="project_id" value="{{$project_id}}">
+                                    <button class="bg-red-500 hover:bg-red-800 text-white font-bold py-1 px-2 rounded text-xs">
+                                        Delete
+                                    </button>
+                                </form>
+                            </div>
+                        @endforeach
                     </div>
                     <div class="block bg-gray-200 text-sm text-right py-2 px-3 -mx-3 -mb-2 rounded-b-lg">
-                        <button id="finish-Btn" class="bg-blue-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
-                            Finish
+                        <button id="close-Btn" class="bg-blue-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
+                            Close
                         </button>
                     </div>
                 </div>
@@ -48,25 +51,26 @@
         </div>
     </div>
 </div>
-<script src="{{ asset('js/app.js') }}"></script>
+<script src="{{ asset('js/app.js') }}">
+    $.ajaxSetup({ headers: { 'csrftoken' : '{{ csrf_token() }}' } });
+</script>
 <script type="text/javascript">
     $('#search').on('keyup',function(){
-        $value=$(this).val()
+        $searchVal=$(this).val()
         $.ajax(
             {
-                type : 'get',
+                type : 'GET',
                 url : '{{URL::to('searchMember')}}',
-                data:{'search':$value},
+                data:{
+                    'search':$searchVal,
+                    'project_id':{{$project_id }}
+                },
                 success: (data)=>{ 
-                    $('#searchRes').fadeIn();
+                    $('#searchRes').fadeIn()
                     $('#searchRes').html(data)
-                    console.log(data)
+                    // console.log(data)
                 }
             }
         )
     })
-    $(document).on('click',':button.AddBtn',function(){
-        console.log('cok')
-    })
-    $.ajaxSetup({ headers: { 'csrftoken' : '{{ csrf_token() }}' } });
 </script>

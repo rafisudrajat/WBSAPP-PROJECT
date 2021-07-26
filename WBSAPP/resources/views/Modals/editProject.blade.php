@@ -3,7 +3,7 @@
         @csrf
         <div class="bg-gray-200 max-w-sm py-2 px-3 rounded shadow-xl text-gray-800">
             <div class="flex justify-between items-center">
-                <label for="type_or_cat" class=" text-lg font-medium text-gray-700" id="formTitle">
+                <label for="general_input" class=" text-lg font-medium text-gray-700" id="formTitle">
                     Project Type/Category
                 </label>
                 <svg class="h-6 w-6 cursor-pointer p-1 hover:bg-gray-300 rounded-full" id="close-modal" fill="currentColor" viewBox="0 0 20 20">
@@ -12,9 +12,11 @@
                         clip-rule="evenodd"></path>
                 </svg>
             </div>
-            
+            {{-- Input --}}
             <div class="mt-2 text-sm">
-                <input type="text" name="type_or_cat" id="type_or_cat" class="focus:ring-indigo-500 focus:border-indigo-500 flex-1 block w-full rounded-md sm:text-sm border border-gray-400" placeholder="" value="{{ old('type_or_Cct') }}">          
+                <input type="hidden" name="identifier" id="identifier" value="">
+                <input type="hidden" name="project_id" id="project_id" value="{{$project_id}}">
+                <input type="text" name="general_input" id="general_input" class="focus:ring-indigo-500 focus:border-indigo-500 flex-1 block w-full rounded-md sm:text-sm border border-gray-400 change-input" placeholder="" value="{{ old('general_input') }}">          
             </div>
             <div class="mt-3 flex justify-end space-x-3">
                 <button type="submit" class="px-3 py-1 bg-blue-800 text-gray-200 hover:bg-green-600 rounded">Confirm</button>

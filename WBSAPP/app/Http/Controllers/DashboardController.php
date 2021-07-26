@@ -77,7 +77,7 @@ class DashboardController extends Controller
     {
         $data = $request->all();
         $type = new Project_type();
-        $type->project_type_name = $data['type_or_cat'];
+        $type->project_type_name = $data['general_input'];
         $save = $type->save();
         if ($save) {
             return back()->with('success');
@@ -90,7 +90,7 @@ class DashboardController extends Controller
         $data = $request->all();
 
         $category = new Project_category();
-        $category->project_category_name = $data['type_or_cat'];
+        $category->project_category_name = $data['general_input'];
         $save = $category->save();
         if ($save) {
             return back()->with('success');
