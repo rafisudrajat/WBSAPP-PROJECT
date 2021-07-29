@@ -8,6 +8,8 @@ use App\Models\User;
 use App\Models\Project_category;
 use App\Models\Project_type;
 use App\Models\Users_task;
+use App\Models\Users_specific_role;
+use App\Models\Specific_role;
 use Facade\FlareClient\Http\Response;
 use Illuminate\Support\Facades\DB;
 use PhpParser\Node\Stmt\Switch_;
@@ -17,15 +19,22 @@ class DetailProject extends Controller
     public function index(Request $request)
     {
         $req = $request->all();
+        // dd($req);
         $project_id = $req['project_id'];
         $project = Project::find($project_id);
-        $memberList = Users_task::where('project_id', $project_id)->get()->toArray();
+        $memberList = Users_specific_role::where('project_id', $project_id)->get()->toArray();
+        // dd($memberList);
         $listUserID = [];
         foreach ($memberList as $user_id) {
             array_push($listUserID, $user_id['user_id']);
         }
-
-        $memberList = User::whereIn('id', $listUserID)->get()->toArray();
+        // dd($listUserID);
+        $memberList = [];
+        foreach ($listUserID as $id) {
+            array_push($memberList, User::find($id)->toArray());
+        }
+        // dd($memberList);
+        // dd($memberList);
         $members = [];
         foreach ($memberList as $member) {
             array_push($members, ['name' => $member['name'], 'id' => $member['id']]);
@@ -56,7 +65,7 @@ class DetailProject extends Controller
             $newUsers = [];
             $allUser2Check = [];
 
-            $checkUser = Users_task::where('project_id', $request->project_id)->get();
+            $checkUser = Users_specific_role::where('project_id', $request->project_id)->get();
             foreach ($checkUser as $key => $check) {
                 array_push($allUser2Check, $check['user_id']);
             }
@@ -95,11 +104,12 @@ class DetailProject extends Controller
     {
 
         $req = $request->all();
-        $users_task = new Users_task();
-        $users_task->user_id = $req['user_id'];
-        $users_task->project_id = $req['project_id'];
-        $save = $users_task->save();
-        if ($save) {
+        // dd($req);
+        $users_spec_role = Users_specific_role::firstOrCreate([
+            'user_id' => $request->user_id,
+            'project_id' => $request->project_id,
+        ]);
+        if ($users_spec_role) {
             return back()->with('success', 'Your account has been registered');
         } else {
             return back()->with('fail', 'Something went wrong, please try again later');
@@ -109,7 +119,7 @@ class DetailProject extends Controller
     {
 
         $req = $request->all();
-        $delete = Users_task::where('user_id', $req['user_id'])->where('project_id', $req['project_id'])->delete();
+        $delete = Users_specific_role::where('user_id', $req['user_id'])->where('project_id', $req['project_id'])->delete();
         if ($delete) {
             return back()->with('success', 'Your account has been registered');
         } else {
@@ -159,6 +169,33 @@ class DetailProject extends Controller
                 break;
         }
         $save = $project->save();
+        if ($save) {
+            return back()->with('success', 'Your account has been registered');
+        } else {
+            return back()->with('fail', 'Something went wrong, please try again later');
+        }
+    }
+    public function editRole(Request $request)
+    {
+        // dd($request->all());
+        $users_spec_role = Users_specific_role::firstOrCreate([
+            'user_id' => $request->identifier,
+            'project_id' => $request->project_id,
+            // 'spec_role_id' => $spec_role->id
+        ]);
+        $spec_role = Specific_role::where('id', $users_spec_role->spec_role_id)->first();
+        // dd($spec_role);
+        if (!$spec_role) {
+            $spec_role = Specific_role::firstOrCreate([
+                'spec_role_name' => $request->general_input
+            ]);
+            $users_spec_role->spec_role_id = $spec_role->id;
+            $save = $users_spec_role->save();
+        } else {
+            $save = $spec_role->update(['spec_role_name' => $request->general_input]);
+            // $spec_role->toQuery()->update(['spec_role_name' => strtolower($request->general_input)]);
+        }
+
         if ($save) {
             return back()->with('success', 'Your account has been registered');
         } else {

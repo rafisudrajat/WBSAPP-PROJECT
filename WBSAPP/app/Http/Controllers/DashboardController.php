@@ -7,13 +7,24 @@ use App\Models\Project;
 use App\Models\Project_type;
 use App\Models\Project_category;
 use App\Models\User;
+use App\Models\Users_task;
+use App\Models\Users_specific_role;
+use App\Models\Specific_role;
 
 class DashboardController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
 
-        $projects = Project::all();
+        // $projects = Project::where('creator_id', $request->session()->get('UserLogged'))->get();
+        // dd($request->session()->get('UserLogged'));
+        $users_tasks = Users_specific_role::where('user_id', $request->session()->get('UserLogged'))->get()->toArray();
+        $projects = [];
+        foreach ($users_tasks as $users_task) {
+            array_push($projects, $users_task['project_id']);
+        }
+        $projects = Project::whereIn('id', $projects)->get()->toArray();
+        // dd($projects);
         $data = [
             'title' => 'Dashboard',
             'project_name' => [],
@@ -49,6 +60,8 @@ class DashboardController extends Controller
 
     public function SubmitNewProject(Request $request)
     {
+        $users_spec_role = new Users_specific_role();
+
         $validated = $request->validate([
             'project_name' => 'required',
             'project_desc' => 'required',
@@ -56,7 +69,7 @@ class DashboardController extends Controller
             'project_category' => 'required'
         ]);
         $data = $request->all();
-        // dd($data);
+
         $user = User::find($request->session()->get('UserLogged'));
 
         $projects = new Project();
@@ -66,7 +79,38 @@ class DashboardController extends Controller
         $projects->type_id = $data['project_type'];
         $projects->category_id = $data['project_category'];
         $save = $user->creator_projects()->save($projects);
+        $users_spec_role->project_id = $save->id;
+        $users_spec_role->user_id = $request->session()->get('UserLogged');
+        $save = $users_spec_role->save();
+
         if ($save) {
+            return back()->with('success', 'Your account has been registered');
+        } else {
+            return back()->with('fail', 'Something went wrong, please try again later');
+        }
+    }
+    public function delete_project(Request $request)
+    {
+
+        $user_spec_roles = Users_specific_role::where('project_id', $request->id2Delete)->get()->toArray();
+        $spec_role_2del = [];
+        foreach ($user_spec_roles as $role) {
+            if ($role['spec_role_id'])
+                array_push($spec_role_2del, $role['spec_role_id']);
+        }
+
+        $check_spec_role = [];
+        foreach ($spec_role_2del as $del) {
+            $check = count(Users_specific_role::where('spec_role_id', $del)->get()->toArray());
+            array_push($check_spec_role, $check);
+        }
+        for ($i = 0; $i < count($spec_role_2del); $i++) {
+            if ($check_spec_role[$i] <= 1)
+                Specific_role::destroy($spec_role_2del[$i]);
+        }
+
+        $delete = Project::destroy($request->id2Delete);
+        if ($delete) {
             return back()->with('success', 'Your account has been registered');
         } else {
             return back()->with('fail', 'Something went wrong, please try again later');

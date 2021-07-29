@@ -8,6 +8,7 @@ use App\Models\Project_category;
 use App\Models\Project_type;
 use App\Models\User;
 use App\Models\Users_task;
+use App\Models\Users_specific_role;
 
 
 class Project extends Model
@@ -30,5 +31,9 @@ class Project extends Model
     public function users_task()
     {
         return $this->hasMany(Users_task::class, 'project_id');
+    }
+    public function users_specific_roles()
+    {
+        return $this->hasMany(Users_specific_role::class, 'project_id');
     }
 }

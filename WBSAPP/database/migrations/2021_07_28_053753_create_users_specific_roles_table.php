@@ -16,9 +16,12 @@ class CreateUsersSpecificRolesTable extends Migration
         Schema::create('users_specific_roles', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id');
-            $table->unsignedBigInteger('spec_role_id');
+            $table->unsignedBigInteger('spec_role_id')->nullable();
+            $table->unsignedBigInteger('project_id')->nullable();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('spec_role_id')->references('id')->on('specific_roles')->onDelete('cascade');
+            $table->foreign('project_id')->references('id')->on('projects')->onDelete('cascade');
+            // $table->timestamps();
         });
     }
 

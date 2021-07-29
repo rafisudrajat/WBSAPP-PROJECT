@@ -37,10 +37,12 @@ Route::group(['middleware' => ['AuthCheck']], function () {
     Route::post('/addNewProject', [DashboardController::class, 'SubmitNewProject'])->name('dashboard.SubmitNewProject');
     Route::post('/addProjectType', [DashboardController::class, 'add_ProjectType'])->name('dashboard.add_ProjectType');
     Route::post('/addProjectCategory', [DashboardController::class, 'add_ProjectCategory'])->name('dashboard.add_ProjectCategory');
+    Route::post('/deleteProject', [DashboardController::class, 'delete_project'])->name('dashboard.delete_project');
     Route::get('/projectDetails', [DetailProject::class, 'index'])->name('detailProject');
     Route::get('/searchMember', [DetailProject::class, 'searchMember'])->name('detailProject.searchMember');
     Route::post('/addMember', [DetailProject::class, 'addMember'])->name('detailProject.addMember');
     Route::post('/delMember', [DetailProject::class, 'deleteMember'])->name('detailProject.delMember');
     Route::get('/queryCT', [DetailProject::class, 'queryCategory_Type'])->name('detailProject.queryCT');
     Route::post('/editProject', [DetailProject::class, 'editProject'])->name('detailProject.editProject');
+    Route::post('/editRoleMember', [DetailProject::class, 'editRole'])->name('detailProject.editRole');
 });

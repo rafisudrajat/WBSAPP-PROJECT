@@ -15,7 +15,7 @@ class CreateSpecificRolesTable extends Migration
     {
         Schema::create('specific_roles', function (Blueprint $table) {
             $table->id();
-            $table->string('spec_role_name');
+            $table->string('spec_role_name')->nullable();
         });
     }
 

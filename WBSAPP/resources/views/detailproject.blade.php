@@ -109,6 +109,8 @@
             const editBtn3=document.getElementById("edit-Btn-3")
             const editBtn4=document.getElementById("edit-Btn-4")
             const closeBtn = document.querySelector('#close-modal')
+            const editRole = document.getElementsByClassName("Role-Edit")
+            // const editRole
 
             function changeInput(className,element){
                 let e = document.querySelector('.change-input')
@@ -168,7 +170,17 @@
                 document.type_cat_form.action = "{{route('detailProject.editProject')}}"
                 document.getElementById('identifier').value='btn4'
             })
-            
+            for (let i = 0; i < editRole.length; i++) {
+                let id=editRole[i].id
+                id=parseInt(id.replace("editRole-",''))
+                editRole[i].addEventListener('click', ()=>{
+                    formTitle.innerHTML ="Edit Member's Role"
+                    changeInput("focus:ring-indigo-500 focus:border-indigo-500 flex-1 block w-full rounded-md sm:text-sm border border-gray-400 change-input",'input') 
+                    document.type_cat_form.action = "{{route('detailProject.editRole')}}"
+                    document.getElementById('identifier').value=id
+                    toggleModal()
+                })
+            }
           
             editMemberBtn.addEventListener('click', toggleModal1)
             finishBtn.addEventListener('click', toggleModal1)

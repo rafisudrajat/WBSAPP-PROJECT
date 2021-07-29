@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\Specific_role;
+use App\Models\Users_specific_role;
 use Illuminate\Support\Facades\Hash;
 
 class EntranceController extends Controller
@@ -30,6 +32,12 @@ class EntranceController extends Controller
         // TO DO: Change default general_role to NonAdmin
         $user->general_role = 'Admin';
         $save = $user->save();
+
+        // Default Users_specific_role 
+        // $users_spec_role = new Users_specific_role();
+        // $users_spec_role->user_id = $user->id;
+        // $save = $users_spec_role->save();
+        // dd($save);
         if ($save) {
             return back()->with('success', 'Your account has been registered');
         } else {
