@@ -19,28 +19,38 @@ class DetailProject extends Controller
     public function index(Request $request)
     {
         $req = $request->all();
-        // dd($req);
+
         $project_id = $req['project_id'];
         $project = Project::find($project_id);
+        $listRoleID = [];
         $memberList = Users_specific_role::where('project_id', $project_id)->get()->toArray();
-        // dd($memberList);
+
+
         $listUserID = [];
         foreach ($memberList as $user_id) {
             array_push($listUserID, $user_id['user_id']);
+            array_push($listRoleID, $user_id['spec_role_id']);
         }
-        // dd($listUserID);
+        // dd($listRoleID);
         $memberList = [];
         foreach ($listUserID as $id) {
             array_push($memberList, User::find($id)->toArray());
         }
         // dd($memberList);
-        // dd($memberList);
-        $members = [];
-        foreach ($memberList as $member) {
-            array_push($members, ['name' => $member['name'], 'id' => $member['id']]);
-        }
 
+        $members = [];
+        $idx = 0;
+        foreach ($memberList as $member) {
+            $spec_role = Specific_role::find($listRoleID[$idx]);
+            if ($spec_role)
+                array_push($members, ['name' => $member['name'], 'id' => $member['id'], 'spec_role' => $spec_role['spec_role_name']]);
+            else
+                array_push($members, ['name' => $member['name'], 'id' => $member['id'], 'spec_role' => $spec_role]);
+            $idx++;
+        }
+        // dd($members);
         $creator = User::find($project['creator_id']);
+        // dd($creator);
         $project_category = Project_category::find($project['category_id'])->project_category_name;
         $project_type = Project_type::find($project['type_id'])->project_type_name;
         $data = [
@@ -49,6 +59,7 @@ class DetailProject extends Controller
             'project_name' => $project["project_name"],
             'project_desc' => $project["project_desc"],
             'project_creator' => $creator["name"],
+            'creator_id' => $creator["id"],
             'project_category' => $project_category,
             'project_type' => $project_type,
             'members' => $members,
@@ -151,6 +162,20 @@ class DetailProject extends Controller
         }
     }
 
+    public function queryAllRole(Request $request)
+    {
+        $output = "<input list='roles' name='general_input' class='change-input'>" .
+            "<datalist id='roles'>";
+        if ($request->ajax()) {
+            $allRoles = Specific_role::all();
+            foreach ($allRoles as $role) {
+                $output .= "<option value='$role->spec_role_name'></option>";
+            }
+            $output .= "</datalist>";
+        }
+        return Response($output);
+    }
+
     public function editProject(Request $request)
     {
         $project = Project::find($request->project_id);
@@ -175,26 +200,31 @@ class DetailProject extends Controller
             return back()->with('fail', 'Something went wrong, please try again later');
         }
     }
+
     public function editRole(Request $request)
     {
-        // dd($request->all());
         $users_spec_role = Users_specific_role::firstOrCreate([
             'user_id' => $request->identifier,
             'project_id' => $request->project_id,
             // 'spec_role_id' => $spec_role->id
         ]);
-        $spec_role = Specific_role::where('id', $users_spec_role->spec_role_id)->first();
-        // dd($spec_role);
-        if (!$spec_role) {
-            $spec_role = Specific_role::firstOrCreate([
-                'spec_role_name' => $request->general_input
-            ]);
-            $users_spec_role->spec_role_id = $spec_role->id;
-            $save = $users_spec_role->save();
-        } else {
-            $save = $spec_role->update(['spec_role_name' => $request->general_input]);
-            // $spec_role->toQuery()->update(['spec_role_name' => strtolower($request->general_input)]);
-        }
+        $spec_role = Specific_role::firstOrCreate([
+            'spec_role_name' => $request->general_input
+        ]);
+        $users_spec_role->spec_role_id = $spec_role->id;
+        $save = $users_spec_role->save();
+        // ----Backup----
+        // $spec_role = Specific_role::where('id', $users_spec_role->spec_role_id)->first();
+        // if (!$spec_role) {
+        //     $spec_role = Specific_role::firstOrCreate([
+        //         'spec_role_name' => $request->general_input
+        //     ]);
+        //     $users_spec_role->spec_role_id = $spec_role->id;
+        //     $save = $users_spec_role->save();
+        // } else {
+        //     $save = $spec_role->update(['spec_role_name' => $request->general_input]);
+        //     // $spec_role->toQuery()->update(['spec_role_name' => strtolower($request->general_input)]);
+        // }
 
         if ($save) {
             return back()->with('success', 'Your account has been registered');

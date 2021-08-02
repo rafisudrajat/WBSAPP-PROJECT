@@ -66,28 +66,46 @@
                     </svg>        
                 </button>
             </div>
+            
            
         </div>
-        <div class="flex justify-end mt-4">
-            <div class="flex flex-col">
-                <div class="flex items-center justify-between overflow-auto w-56 mt-2" id="style-10">
-                    <img class="inline-block h-10 w-10 rounded-full text-white border-2 border-white object-cover object-center" src="https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=80" alt="">
-                    <img class="-ml-2 inline-block h-10 w-10 rounded-full text-white border-2 border-white object-cover object-center" src="https://images.unsplash.com/photo-1510520434124-5bc7e642b61d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60" alt="">
-                    <img class="-ml-2 inline-block h-10 w-10 rounded-full text-white border-2 border-white object-cover object-center" src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=634&q=80" alt="">
-                    <img class="-ml-2 inline-block h-10 w-10 rounded-full text-white border-2 border-white object-cover object-center" src="https://images.unsplash.com/photo-1542156822-6924d1a71ace?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=750&q=80" alt="">
-                    {{-- <img class="-ml-2 inline-block h-10 w-10 rounded-full text-white border-2 border-white object-cover object-center" src="https://images.unsplash.com/photo-1542156822-6924d1a71ace?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=750&q=80" alt="">
-                    <img class="-ml-2 inline-block h-10 w-10 rounded-full text-white border-2 border-white object-cover object-center" src="https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=80" alt="">
-                    <img class="-ml-2 inline-block h-10 w-10 rounded-full text-white border-2 border-white object-cover object-center" src="https://images.unsplash.com/photo-1510520434124-5bc7e642b61d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60" alt="">
-                    <img class="-ml-2 inline-block h-10 w-10 rounded-full text-white border-2 border-white object-cover object-center" src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=634&q=80" alt="">
-                    <img class="-ml-2 inline-block h-10 w-10 rounded-full text-white border-2 border-white object-cover object-center" src="https://images.unsplash.com/photo-1542156822-6924d1a71ace?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=750&q=80" alt="">
-                    <img class="-ml-2 inline-block h-10 w-10 rounded-full text-white border-2 border-white object-cover object-center" src="https://images.unsplash.com/photo-1542156822-6924d1a71ace?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=750&q=80" alt=""> --}}
-                    <img class="-ml-2 inline-block h-10 w-10 rounded-full text-white border-2 border-white object-cover object-center" src="https://images.unsplash.com/photo-1542156822-6924d1a71ace?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=750&q=80" alt="">
+      
+        <div class="flex flex-row items-center" >
+            @if ($creator_id==session('UserLogged'))
+                <div class="flex-grow ">
+                    <form action="/seeTask" method="GET">
+                        <input type="hidden" name="project_id" value="{{$project_id}}">
+                        <button type="submit" class="underline">See All Progress</button>
+                    </form>
                 </div>
-                <div class="flex justify-end">
-                    <button id="editMember" type="button" class="text-right underline">Edit project member</button>
+            @else
+                <div class="flex-grow"></div>
+            @endif
+            <div class="flex justify-end mt-4">
+                <div class="flex flex-col">
+                    <div class="flex items-center justify-between overflow-auto w-56 mt-2" id="style-10">
+                        <img class="inline-block h-10 w-10 rounded-full text-white border-2 border-white object-cover object-center" src="https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=80" alt="">
+                        <img class="-ml-2 inline-block h-10 w-10 rounded-full text-white border-2 border-white object-cover object-center" src="https://images.unsplash.com/photo-1510520434124-5bc7e642b61d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60" alt="">
+                        <img class="-ml-2 inline-block h-10 w-10 rounded-full text-white border-2 border-white object-cover object-center" src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=634&q=80" alt="">
+                        <img class="-ml-2 inline-block h-10 w-10 rounded-full text-white border-2 border-white object-cover object-center" src="https://images.unsplash.com/photo-1542156822-6924d1a71ace?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=750&q=80" alt="">
+                        {{-- <img class="-ml-2 inline-block h-10 w-10 rounded-full text-white border-2 border-white object-cover object-center" src="https://images.unsplash.com/photo-1542156822-6924d1a71ace?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=750&q=80" alt="">
+                        <img class="-ml-2 inline-block h-10 w-10 rounded-full text-white border-2 border-white object-cover object-center" src="https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=80" alt="">
+                        <img class="-ml-2 inline-block h-10 w-10 rounded-full text-white border-2 border-white object-cover object-center" src="https://images.unsplash.com/photo-1510520434124-5bc7e642b61d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60" alt="">
+                        <img class="-ml-2 inline-block h-10 w-10 rounded-full text-white border-2 border-white object-cover object-center" src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=634&q=80" alt="">
+                        <img class="-ml-2 inline-block h-10 w-10 rounded-full text-white border-2 border-white object-cover object-center" src="https://images.unsplash.com/photo-1542156822-6924d1a71ace?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=750&q=80" alt="">
+                        <img class="-ml-2 inline-block h-10 w-10 rounded-full text-white border-2 border-white object-cover object-center" src="https://images.unsplash.com/photo-1542156822-6924d1a71ace?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=750&q=80" alt=""> --}}
+                        <img class="-ml-2 inline-block h-10 w-10 rounded-full text-white border-2 border-white object-cover object-center" src="https://images.unsplash.com/photo-1542156822-6924d1a71ace?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=750&q=80" alt="">
+                    </div>
+                    @if ($creator_id==session('UserLogged'))
+                        <div class="flex justify-end">
+                            <button id="editMember" type="button" class="text-right underline">Edit project member</button>
+                        </div>    
+                    @endif
                 </div>
             </div>
+            
         </div>
+        
         
     </div>
     @include('Modals.addUser2Project')
@@ -121,18 +139,20 @@
                 e.parentNode.replaceChild(d, e)
             }
 
-            function change2Dropdown(input){
+            function change2Dropdown(route,input=''){
                 $.ajax(
                 {
                     type : 'GET',
-                    url : '{{URL::to('queryCT')}}',
+                    url : route,
                     data:{'key':input},
                     success: (data)=>{ 
                         $('.change-input').replaceWith(data)
                         toggleModal()
+                        // console.log(data)
                     }
                 })
             }
+
             const toggleModal = () => {
                 overlay.classList.toggle('hidden')
                 overlay.classList.toggle('flex')
@@ -159,26 +179,29 @@
             // DROPDOWN
             editBtn3.addEventListener('click', ()=>{
                 formTitle.innerHTML ="Edit Project Category"
-                change2Dropdown('cat')
+                change2Dropdown('/queryCT','cat')
                 document.type_cat_form.action = "{{route('detailProject.editProject')}}"
                 document.getElementById('identifier').value='btn3'
             })
 
             editBtn4.addEventListener('click', ()=>{
                 formTitle.innerHTML ="Edit Project Type"
-                change2Dropdown('type')
+                change2Dropdown('/queryCT','type')
                 document.type_cat_form.action = "{{route('detailProject.editProject')}}"
                 document.getElementById('identifier').value='btn4'
             })
+            // To Edit Role
             for (let i = 0; i < editRole.length; i++) {
                 let id=editRole[i].id
                 id=parseInt(id.replace("editRole-",''))
                 editRole[i].addEventListener('click', ()=>{
                     formTitle.innerHTML ="Edit Member's Role"
-                    changeInput("focus:ring-indigo-500 focus:border-indigo-500 flex-1 block w-full rounded-md sm:text-sm border border-gray-400 change-input",'input') 
+                    // changeInput("focus:ring-indigo-500 focus:border-indigo-500 flex-1 block w-full rounded-md sm:text-sm border border-gray-400 change-input",'input') 
                     document.type_cat_form.action = "{{route('detailProject.editRole')}}"
                     document.getElementById('identifier').value=id
-                    toggleModal()
+                    // Add DropDown
+                    change2Dropdown('/queryRole')
+                    
                 })
             }
           

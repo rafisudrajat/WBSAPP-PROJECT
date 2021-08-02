@@ -1,6 +1,7 @@
 @extends('Layouts.home')
 
 @section('content')
+ 
   <div class="relative flex items-center">
     <h1 class="text-red-800 text-3xl">My Project </h1>
     <a href="/addNewProject" class="text-red-800 absolute underline bottom-0 right-0 z-0" >+Create New Project</a>
@@ -16,11 +17,13 @@
           </h1>
            
           <div>
-            <svg class="absolute right-1 h-6 w-6 cursor-pointer p-1 hover:bg-red-300 rounded-full delProject" id="delBtn-{{$project_id[$i]}}"  fill="currentColor" viewBox="0 0 20 20">
-              <path fill-rule="evenodd"
-                  d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                  clip-rule="evenodd"></path>
-             </svg>
+            @if ($creator_id[$i]==session('UserLogged'))
+              <svg class="absolute right-1 h-6 w-6 cursor-pointer p-1 hover:bg-red-300 rounded-full delProject" id="delBtn-{{$project_id[$i]}}"  fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd"
+                    d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                    clip-rule="evenodd"></path>
+              </svg>    
+            @endif
           </div>
         </div>
         <div class="font-light ml-2.5">

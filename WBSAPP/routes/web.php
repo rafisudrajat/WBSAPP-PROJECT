@@ -5,6 +5,7 @@ use App\Http\Controllers\User_test;
 use App\Http\Controllers\EntranceController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DetailProject;
+use App\Http\Controllers\TaskController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -45,4 +46,6 @@ Route::group(['middleware' => ['AuthCheck']], function () {
     Route::get('/queryCT', [DetailProject::class, 'queryCategory_Type'])->name('detailProject.queryCT');
     Route::post('/editProject', [DetailProject::class, 'editProject'])->name('detailProject.editProject');
     Route::post('/editRoleMember', [DetailProject::class, 'editRole'])->name('detailProject.editRole');
+    Route::get('/queryRole', [DetailProject::class, 'queryAllRole'])->name('detailProject.queryRole');
+    Route::get('/seeTask', [TaskController::class, 'index'])->name('taskController.index');
 });

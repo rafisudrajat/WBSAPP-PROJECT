@@ -30,7 +30,17 @@
                         @for($i=0;$i<count($members);$i++)
                             <div class="flex justify-start cursor-pointer text-gray-700 hover:text-blue-400 hover:bg-blue-100 rounded-md px-2 py-2 my-2 space-x-1">
                                 <span class="bg-gray-400 h-2 w-2 m-2 rounded-full"></span>
-                                <div class="flex-grow font-medium px-2">{{$members[$i]['name']}}</div>
+                                <div class="flex-grow font-medium px-2">
+                                    {{$members[$i]['name']}}
+                                    @if($i!=0)
+                                        @if(!$members[$i]['spec_role'])
+                                            <div>No Specific Role</div>
+                                        @else    
+                                            <div>{{$members[$i]['spec_role']}}</div>
+                                        @endif
+                                    @endif
+                                </div>
+                               
                                 <form action="/delMember" method="POST">
                                     @csrf
                                     <input type="hidden" name="user_id" value="{{$members[$i]['id']}}" >
