@@ -16,20 +16,24 @@ class CreateTasksTable extends Migration
         Schema::create('tasks', function (Blueprint $table) {
             $table->id();
             $table->string('gitlab_id');
-            $table->string('task_category');
+            $table->bigInteger('task_cat_id')->unsigned();
             $table->string('task_name');
-            $table->string('pic');
-            $table->string('task_executor');
+            $table->bigInteger('pic_id')->unsigned();
+            $table->bigInteger('exec_id')->unsigned();
             $table->date('start_date');
             $table->date('due_date');
             $table->time('start_time');
             $table->time('stop_time');
             $table->integer('progress')->unsigned();
             $table->string('prev_task');
-            $table->string('qc_tester');
-            $table->date('qc_testdate');
-            $table->string('qc_properness');
+            $table->bigInteger('qc_tester_id')->unsigned()->nullable();
+            $table->date('qc_testdate')->nullable();
+            $table->string('qc_properness')->nullable();
             $table->text('notes');
+            $table->foreign('task_cat_id')->references('id')->on('task_category')->onDelete('cascade');
+            $table->foreign('pic_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('exec_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('qc_tester_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 

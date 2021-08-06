@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Model;
 use App\Models\Specific_role;
 use App\Models\Users_task;
 use App\Models\Users_specific_role;
+use App\Models\Task;
 
 class User extends Authenticatable
 {
@@ -28,5 +29,13 @@ class User extends Authenticatable
     public function creator_projects()
     {
         return $this->hasMany(Project::class, 'creator_id');
+    }
+    public function task_pic()
+    {
+        return $this->hasMany(Task::class, 'pic_id');
+    }
+    public function task_exec()
+    {
+        return $this->hasMany(Task::class, 'exec_id');
     }
 }
