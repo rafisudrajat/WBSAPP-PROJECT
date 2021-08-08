@@ -51,13 +51,16 @@
                             </td>
                             <td >
                                 <div class='flex flex-col place-content-center gap-y-1'>
-                                    <button type="button" class="text-sm bg-blue-500 hover:bg-blue-700 text-white py-1 px-2 rounded focus:outline-none focus:shadow-outline">
-                                        Edit
-                                    </button>
-                                    <button type="button" class="text-sm bg-red-500 hover:bg-red-700 text-white py-1 px-2 rounded focus:outline-none focus:shadow-outline">
-                                        Delete
-                                    </button>
-
+                                    <form action="" method="post">
+                                        <button type="button" id="Edit-Task" class="text-sm bg-blue-500 hover:bg-blue-700 text-white py-1 px-2 rounded focus:outline-none focus:shadow-outline">
+                                            Edit
+                                        </button>
+                                    </form>
+                                    <form action="" method="GET">
+                                        <button type="button" id="Delete-Task" class="text-sm bg-red-500 hover:bg-red-700 text-white py-1 px-2 rounded focus:outline-none focus:shadow-outline">
+                                            Delete
+                                        </button>
+                                    </form>
                                 </div>
                             </td>
                         </tr>
@@ -77,12 +80,16 @@
             </div>
         </div>
     </div>
-@include('Modals.taskFormAdmin')
+    @include('Modals.taskFormAdmin')
+    @include('Modals.edittaskFormAdmin')
+    @include('Modals.deletetaskFormAdmin')
 
 <script type="text/javascript">
     window.addEventListener('DOMContentLoaded', () =>{
         const overlay = document.querySelector('#overlay')
         const AddTask = document.querySelector('#Add-Task')
+        const EditTask = document.querySelector('#Edit-Task')
+        const DeleteTask = document.querySelector('#Delete-Task')
         const closeBtn = document.querySelector('#close-modal')
 
         const toggleModal = () => {
@@ -90,6 +97,8 @@
                 overlay.classList.toggle('flex')
         }
         AddTask.addEventListener('click', toggleModal)
+        EditTask.addEventListener('click', toggleModal)
+        DeleteTask.addEventListener('click', toggleModal)
         closeBtn.addEventListener('click', toggleModal)
     })
 </script>

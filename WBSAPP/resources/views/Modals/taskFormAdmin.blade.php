@@ -104,10 +104,10 @@
                         <button type="submit" class=" text-sm bg-blue-500 hover:bg-blue-700 text-white py-1 px-2 rounded focus:outline-none focus:shadow-outline">
                             Save Task
                         </button>
-                    </form>
+                    </form>           
                 </div>
             </div>
         </div>
     </div>
-    
+
 </div>

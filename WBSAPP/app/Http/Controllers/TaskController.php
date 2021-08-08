@@ -13,7 +13,7 @@ class TaskController extends Controller
 {
     public function index(Request $request)
     {
-        // dd($request->all());
+        //dd($request->all());
         $users_id = Users_specific_role::where('project_id', $request->project_id)->get();
         $users_task = Users_task::where('project_id', $request->project_id)->get();
         $ids_users = [];
@@ -67,7 +67,7 @@ class TaskController extends Controller
             array_push($pics, User::find($pics_id[$i])->name);
             array_push($task_executors, User::find($task_executors_id[$i])->name);
         }
-        // dd(Task_Category::all()->toArray());
+        //dd(Task_Category::all()->toArray());
         $task_cat_list = Task_Category::all()->toArray();
         $task_cat_choice = [];
         foreach ($task_cat_list as $cat) {
@@ -136,4 +136,70 @@ class TaskController extends Controller
             return back()->with('fail', 'Something went wrong, please try again later');
         }
     }
+    public function editTask(Request $request)
+    {
+        $old_task = Task ::firstorCreate([
+            'task_id' => request->identifier,
+            'pic_id' => request->pic_id,
+            'exec_id'=> request->exec_id,
+        ]);
+        $old_task->gitlab_id= $request->gitlab_id;
+        $old_task->progress= $request->progress;
+        $old_task->task_name= $request->task_name;
+        $old_task->prev_task= $request->prev_task;
+        $old_task->start_date= $request->start_date;
+        $old_task->due_date= $request->due_date;
+        $old_task->start_time=$request->start_time;
+        $old_task->stop_time=$request->stop_time;
+        $old_task->start_time=$request->start_time;
+
+
+        $pic_id = (User::where('name', $request['pic-id'])->first())['id'];
+        $task_exec_id = (User::where('name', $request['task_exec_id'])->first())['id'];
+        $Task = new Task();
+        $Task->gitlab_id = $request['gitlab-ID'];
+        $Task->progress = $request['progress'];
+        $Task->task_name = $request['task-name'];
+        $Task->pic_id = $pic_id;
+        $Task->exec_id = $task_exec_id;
+        $Task->prev_task = $request['prev-task'];
+        $Task->start_date = $request['start-date'];
+        $Task->due_date = $request['due-date'];
+        $Task->start_time = $request['start-time'];
+        $Task->stop_time = $request['stop-time'];
+        $Task->notes = $request['notes'];
+        // $spec_role = Specific_role::firstOrCreate([
+        //     'spec_role_name' => $request->general_input
+        // ]);
+
+        $task_cat = Task_Category::firstOrCreate([
+            'task_category_name' => $request->task_category
+        ]);
+        $Task = $task_cat->task()->save($Task);
+        $users_task = new Users_task();
+        $users_task->user_id = $request->session()->get('UserLogged');
+        $users_task->project_id = $request->project_id;
+        $users_task->task_id = $Task->id;
+        $save = $users_task->save();
+
+
+        $edit = Task_Category::destroy($request->task_category);
+        if ($edit) {
+            return back()->with('success', 'Your task has been deleted');
+        } else {
+            return back()->with('fail', 'Something went wrong, please try again later');
+        }
+    }
+
+    public function deleteTask(Request $request)
+    {
+        $delete = Task::where('task_id', $req['task_id'])->delete();
+        if ($delete) {
+            return back()->with('success', 'Your task has been deleted');
+        } else {
+            return back()->with('fail', 'Something went wrong, please try again later');
+        }
+
+    }
+
 }
