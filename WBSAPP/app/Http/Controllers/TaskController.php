@@ -151,8 +151,7 @@ class TaskController extends Controller
         $old_task->due_date= $request->due_date;
         $old_task->start_time=$request->start_time;
         $old_task->stop_time=$request->stop_time;
-        $old_task->start_time=$request->start_time;
-
+        $old_task->notes=$request->notes;
 
         $pic_id = (User::where('name', $request['pic-id'])->first())['id'];
         $task_exec_id = (User::where('name', $request['task_exec_id'])->first())['id'];
@@ -171,7 +170,7 @@ class TaskController extends Controller
         // $spec_role = Specific_role::firstOrCreate([
         //     'spec_role_name' => $request->general_input
         // ]);
-
+        
         $task_cat = Task_Category::firstOrCreate([
             'task_category_name' => $request->task_category
         ]);
