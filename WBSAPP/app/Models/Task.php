@@ -31,4 +31,8 @@ class Task extends Model
     {
         return $this->belongsTo(User::class, 'exec_id');
     }
+    public function user_qc_tester()
+    {
+        return $this->belongsTo(User::class, 'qc_tester_id');
+    }
 }

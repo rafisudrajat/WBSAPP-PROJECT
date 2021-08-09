@@ -93,6 +93,27 @@
                                 <input type="time" id="stop-time" name="stop-time" class="px-5 rounded focus:outline-none text-gray-600 focus:text-gray-600" />
                             </div>
                         </div>
+                        {{-- QC --}}
+                        <div class="flex items-center justify-between mb-5">
+                            <div class="flex flex-col text-center w-4/12 px-2">
+                                <label class="mb-1" for="qc_test_date">QC Test Date</label>
+                                <input type="date" id="qc_test_date" name="qc_test_date" class="px-5 rounded focus:outline-none text-gray-600 focus:text-gray-600" />
+                            </div>
+                            <div class="flex flex-col text-center w-5/12 px-2">
+                                <label class="mb-1" for="qc_tester_name">QC Tester</label>
+                                <input list="qc_testers" id="qc_tester_name" name="qc_tester_name" class="pl-3 rounded focus:outline-none text-gray-600 focus:text-gray-600" />
+                                <datalist id="qc_testers">
+                                    {{-- QC Tester OPTIONS --}}
+                                    @foreach ($qc_lists as $qc)
+                                        <option value="{{$qc}}"></option>
+                                    @endforeach
+                                </datalist>
+                            </div>
+                            <div class="flex flex-col text-center w-3/12 px-2">
+                                <label class="mb-1" for="qc_properness">QC Properness</label>
+                                <input type="text" id="qc_properness" name="qc_properness" class="px-5 rounded focus:outline-none text-gray-600 focus:text-gray-600" />
+                            </div>
+                        </div>
                         <div class="flex items-center justify-between mb-5">
                             <div class="flex flex-col text-center w-full px-2">
                                 <label class="mb-1" for="notes">Notes</label>
