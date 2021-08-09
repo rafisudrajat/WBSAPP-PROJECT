@@ -136,67 +136,22 @@ class TaskController extends Controller
             return back()->with('fail', 'Something went wrong, please try again later');
         }
     }
-    public function editTask($task_id)
-    {
-        $old_data=[
-            'title' => 'Task',
-            'project_id' => Task::find($task_id)->project_id,
-            "gitlab_id" => Task::find($task_id)->gitlab_id,
-            "task_cat_id" =>  Task::find($task_id)->task_cat_id,
-            "task_name" =>  Task::find($task_id)->task_name,
-            "pic_id" =>  Task::find($task_id)->pic_id,
-            "exec_id" =>  Task::find($task_id)->exec_id,
-            "start_date" =>  Task::find($task_id)->start_date,
-            "due_date" =>  Task::find($task_id)->due_date,
-            "start_time" =>  Task::find($task_id)->start_time,
-            "stop_time" =>  Task::find($task_id)->stop_time,
-            "progress" =>  Task::find($task_id)->progress,
-            "prev_task" =>  Task::find($task_id)->prev_task,
-            "notes" =>  Task::find($task_id)->notes
-        ];
-        return modal('editTask',$old_data);
-    }
 
-    public function updateTask($task_id)
+    public function updateTask(Request $request)
     {
-        $this->validate($request,[
-            "gitlab_id" => 'required',
-            "task_cat_id" => 'required',
-            "task_name" => 'required',
-            "pic_id" => 'required',
-            "exec_id" => 'required',
-            "start_date" => 'required',
-            "due_date" => 'required',
-            "start_time" => 'required',
-            "stop_time" => 'required',
-            "progress" => 'required',
-            "prev_task" => 'required',
-            "notes" => 'required'
-        ]);
-        
-        $edited_task=Task::find($id);
-        $edited_task->gitlab_id=$request->gitlab_id;
-        $edited_task->task_cat_id=$request->task_cat_id;
-        $edited_task->task_name_id=$request->task_name_id;
-        $edited_task->pic_id=$request->pic_id;
-        $edited_task->exec_id=$request->exec_id;
-        $edited_task->start_data=$request->start_date;
-        $edited_task->due_date=$request->due_date;
-        $edited_task->start_time=$request->start_time;
-        $edited_task->stop_time=$request->stop_time;
-        $edited_task->progress=$request->progress;
-        $edited_task->prev_task=$request->prev_task;
-        $edited_task->notes=$request->notes;
-        
-        $edited_task->save();
-        if ($edited_task) {
-            return redirect('/seealltask')->with('success', 'Your task has been deleted');
-        } else {
-            return redirect('/seealltask')->with('fail', 'Something went wrong, please try again later');
+        $output = "<input list='roles' name='general_input' class='change-input'>" .
+            "<datalist id='roles'>";
+        if ($request->ajax()) {
+            $allTask = task::all();
+            foreach ($allTask as $task) {
+                $output .= "<option value='$role->spec_role_name'></option>";
+            }
+            $output .= "</datalist>";
         }
+        return Response($output);
     }
 
-    public function deleteTask($task_id)
+    public function deleteTask(Request $request)
     {
         $delete = Task::find($task_id)->delete();
         if ($delete) {
