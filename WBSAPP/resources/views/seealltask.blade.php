@@ -51,13 +51,16 @@
                             </td>
                             <td >
                                 <div class='flex flex-col place-content-center gap-y-1'>
-                                    <button type="button" class="text-sm bg-blue-500 hover:bg-blue-700 text-white py-1 px-2 rounded focus:outline-none focus:shadow-outline">
-                                        Edit
-                                    </button>
-                                    <button type="button" class="text-sm bg-red-500 hover:bg-red-700 text-white py-1 px-2 rounded focus:outline-none focus:shadow-outline">
-                                        Delete
-                                    </button>
-
+                                    <form action="/editTask" method="post">
+                                        <button type="button" id="Edit-Task" class="text-sm bg-blue-500 hover:bg-blue-700 text-white py-1 px-2 rounded focus:outline-none focus:shadow-outline">
+                                            Edit
+                                        </button>
+                                    </form>
+                                    <form action="/deleteTask" method="post">
+                                        <button type="button" id="Delete-Task" class="text-sm bg-red-500 hover:bg-red-700 text-white py-1 px-2 rounded focus:outline-none focus:shadow-outline">
+                                            Delete
+                                        </button>
+                                    </form>
                                 </div>
                             </td>
                         </tr>
@@ -73,24 +76,48 @@
                         Add New Task
                     </button>
                 </form>
-
             </div>
         </div>
     </div>
 @include('Modals.taskFormAdmin')
+@include('Modals.editTask')
+@include('Modals.ensureDeleteTask')
 
 <script type="text/javascript">
     window.addEventListener('DOMContentLoaded', () =>{
         const overlay = document.querySelector('#overlay')
+        const overlayEditTask = document.querySelector('#overlayEditTask')
+        const overlayDeleteTask = document.querySelector('#overlayDeleteTask')
+        
         const AddTask = document.querySelector('#Add-Task')
+        const EditTask = document.querySelector('#Edit-Task')
+        const DeleteTask = document.querySelector('#Delete-Task')
         const closeBtn = document.querySelector('#close-modal')
+        const closeBtn2 = document.querySelector('#close-modal')
+        const closeBtn3 = document.querySelector('#cancel-Btn')
 
         const toggleModal = () => {
                 overlay.classList.toggle('hidden')
                 overlay.classList.toggle('flex')
         }
+
+        const toggleModal2 = () => {
+                overlayEditTask.classList.toggle('hidden')
+                overlayEditTask.classList.toggle('flex')
+        }
+        
+        const toggleModal3 = () => {
+                overlayDeleteTask.classList.toggle('hidden')
+                overlayDeleteTask.classList.toggle('flex')
+        }
+
         AddTask.addEventListener('click', toggleModal)
+        EditTask.addEventListener('click', toggleModal2)
+        DeleteTask.addEventListener('click', toggleModal3)
         closeBtn.addEventListener('click', toggleModal)
+        closeBtn2.addEventListener('click', toggleModal2)
+        closeBtn3.addEventListener('click', toggleModal3)
     })
 </script>
+
 @endsection

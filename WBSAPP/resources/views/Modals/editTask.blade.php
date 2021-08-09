@@ -1,4 +1,4 @@
-<div class="bg-black bg-opacity-50 absolute inset-0 hidden justify-center items-center" id="overlay">
+<div class="bg-black bg-opacity-50 absolute inset-0 hidden justify-center items-center" id="overlayEditTask">
     <div class="w-5/6 lg:w-3/6 rounded-xl bg-gray-300 mr-3">
         <div class="flex flex-col">
             <div id="header" class="flex flex-row relative justify-center text-white py-4 bg-gray-800">
