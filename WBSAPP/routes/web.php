@@ -49,6 +49,7 @@ Route::group(['middleware' => ['AuthCheck']], function () {
     Route::get('/queryRole', [DetailProject::class, 'queryAllRole'])->name('detailProject.queryRole');
     Route::get('/seeTask', [TaskController::class, 'index'])->name('taskController.index');
     Route::post('/addTask', [TaskController::class, 'addTask'])->name('taskController.addTask');
-    Route::post('/editTask', [TaskController::class, 'editTask'])->name('taskController.editTask');
-    Route::post('/deleteTask', [TaskController::class, 'deleteTask'])->name('taskController.deleteTask');
+    Route::post('/editTask/{task_id}', [TaskController::class, 'editTask'])->name('taskController.editTask');
+    Route::put('/updateTask/{task_id}',[TaskController::class, 'updateTask'])->name('taskController.updateTask');
+    Route::get('/deleteTask/{task_id}', [TaskController::class, 'deleteTask'])->name('taskController.deleteTask');
 });
