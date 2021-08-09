@@ -52,12 +52,12 @@
                             <td >
                                 <div class='flex flex-col place-content-center gap-y-1'>
                                     <form action="/editTask" method="post">
-                                        <button type="button" id="Edit-Task" class="text-sm bg-blue-500 hover:bg-blue-700 text-white py-1 px-2 rounded focus:outline-none focus:shadow-outline">
+                                        <button type="button" id="Edit-Task{{$gitlab_id[$i]}}"  class="text-sm bg-blue-500 hover:bg-blue-700 text-white py-1 px-2 rounded focus:outline-none focus:shadow-outline editTask">
                                             Edit
                                         </button>
                                     </form>
                                     <form action="/deleteTask" method="post">
-                                        <button type="button" id="Delete-Task" class="text-sm bg-red-500 hover:bg-red-700 text-white py-1 px-2 rounded focus:outline-none focus:shadow-outline">
+                                        <button type="button" id="Delete-Task{{$gitlab_id[$i]}}" class="text-sm bg-red-500 hover:bg-red-700 text-white py-1 px-2 rounded focus:outline-none focus:shadow-outline deleteTask">
                                             Delete
                                         </button>
                                     </form>
@@ -90,10 +90,11 @@
         const overlayDeleteTask = document.querySelector('#overlayDeleteTask')
         
         const AddTask = document.querySelector('#Add-Task')
-        const EditTask = document.querySelector('#Edit-Task')
-        const DeleteTask = document.querySelector('#Delete-Task')
+        const EditTask = document.getElementsByClassName("editTask")
+        const DeleteTask = document.getElementsByClassName("deleteTask")
+        
         const closeBtn = document.querySelector('#close-modal')
-        const closeBtn2 = document.querySelector('#close-modal')
+        const closeBtn2 = document.querySelector('#close-editTask')
         const closeBtn3 = document.querySelector('#cancel-Btn')
 
         const toggleModal = () => {
@@ -111,12 +112,31 @@
                 overlayDeleteTask.classList.toggle('flex')
         }
 
+        for (let i = 0; i < EditTask.length; i++) {
+            let id=EditTask[i].id
+            id=parseInt(id.replace("Edit-Task",''))
+            EditTask[i].addEventListener('click', ()=>{
+            toggleModal2(id)
+            })
+        }
+
+        for (let i = 0; i < DeleteTask.length; i++) {
+            let id=DeleteTask[i].id
+            id=parseInt(id.replace("Delete-Task",''))
+            DeleteTask[i].addEventListener('click', ()=>{
+            toggleModal3(id)
+            })
+        }
+        
+        closeBtn2.addEventListener('click',()=>{
+            toggleModal2()
+        })
+        closeBtn3.addEventListener('click',()=>{
+            toggleModal3()
+        })
+
         AddTask.addEventListener('click', toggleModal)
-        EditTask.addEventListener('click', toggleModal2)
-        DeleteTask.addEventListener('click', toggleModal3)
         closeBtn.addEventListener('click', toggleModal)
-        closeBtn2.addEventListener('click', toggleModal2)
-        closeBtn3.addEventListener('click', toggleModal3)
     })
 </script>
 
