@@ -178,4 +178,29 @@ class TaskController extends Controller
             return back()->with('fail', 'Something went wrong, please try again later');
         }
     }
+
+    // PAsti ERROR
+    public function updateTask(Request $request)
+    {
+        $output = "<input list='roles' name='general_input' class='change-input'>" .
+            "<datalist id='roles'>";
+        if ($request->ajax()) {
+            $allTask = task::all();
+            foreach ($allTask as $task) {
+                $output .= "<option value='$role->spec_role_name'></option>";
+            }
+            $output .= "</datalist>";
+        }
+        return Response($output);
+    }
+
+    public function deleteTask(Request $request)
+    {
+        $delete = Task::find($task_id)->delete();
+        if ($delete) {
+            return back()->with('success', 'Your task has been deleted');
+        } else {
+            return back()->with('fail', 'Something went wrong, please try again later');
+        }
+    }
 }

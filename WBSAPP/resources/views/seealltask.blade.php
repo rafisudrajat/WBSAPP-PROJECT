@@ -49,18 +49,22 @@
                             </td>
                             <td >
                                 <div class='flex flex-col place-content-center gap-y-1'>
+
                                     @if ($gen_role=='Admin' || $task_maker[$i]==session('UserLogged') || in_array(1,$spec_role, TRUE) )
                                         <form action="/editTask" method="post">
+                                            <input type="hidden" name="task_id" value="{{$task_id}}">
                                             <button type="button" id="Edit-Task{{$gitlab_id[$i]}}"  class="text-sm bg-blue-500 hover:bg-blue-700 text-white py-1 px-2 rounded focus:outline-none focus:shadow-outline editTask">
                                                 Edit
                                             </button>
                                         </form>
                                         <form action="/deleteTask" method="post">
+                                            <input type="hidden" name="task_id" value="{{$task_id}}">
                                             <button type="button" id="Delete-Task{{$gitlab_id[$i]}}" class="text-sm bg-red-500 hover:bg-red-700 text-white py-1 px-2 rounded focus:outline-none focus:shadow-outline deleteTask">
                                                 Delete
                                             </button>
                                         </form>
                                     @endif
+
 
                                 </div>
                             </td>
@@ -80,9 +84,15 @@
             </div>
         </div>
     </div>
+
 @include('Modals.taskFormAdmin')
 @include('Modals.editTask')
 @include('Modals.ensureDeleteTask')
+
+{{-- INCLUDE JQUERY AJAX --}}
+<script src="{{ asset('js/app.js') }}">
+    $.ajaxSetup({ headers: { 'csrftoken' : '{{ csrf_token() }}' } });
+</script>
 
 <script type="text/javascript">
     window.addEventListener('DOMContentLoaded', () =>{
@@ -94,6 +104,7 @@
         const EditTask = document.getElementsByClassName("editTask")
         const DeleteTask = document.getElementsByClassName("deleteTask")
         
+
         const closeBtn = document.querySelector('#close-modal')
         const closeBtn2 = document.querySelector('#close-editTask')
         const closeBtn3 = document.querySelector('#cancel-Btn')
