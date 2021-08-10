@@ -15,7 +15,6 @@ class TaskController extends Controller
 {
     public function index(Request $request)
     {
-        // dd($request->all());
 
         $all_users_id = Users_specific_role::where('project_id', $request->project_id)->get();
         $users_task = Users_task::where('project_id', $request->project_id)->get();

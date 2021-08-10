@@ -44,18 +44,18 @@
                             <td class="text-center py-3 px-2">{{$qc_properness[$i]}}</td>
                             <td class="text-center py-3 px-2 ">
                                 <div class="h-24 overflow-y-scroll">
-                                    "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-                                    quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-                                    Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+                                    {{$notes[$i]}}
                                 </div>
                             </td>
                             <td >
                                 <div class='flex flex-col place-content-center gap-y-1'>
+
                                     @if ($gen_role=='Admin' || $task_maker[$i]==session('UserLogged') || in_array(1,$spec_role, TRUE) )
-                                        <button type="button" class="text-sm bg-blue-500 hover:bg-blue-700 text-white py-1 px-2 rounded focus:outline-none focus:shadow-outline">
+                                        <button type="button" class="text-sm bg-blue-500 hover:bg-blue-700 text-white py-1 px-2 rounded focus:outline-none focus:shadow-outline edit-Task">
                                             Edit
                                         </button>
-                                        <button type="button" class="text-sm bg-red-500 hover:bg-red-700 text-white py-1 px-2 rounded focus:outline-none focus:shadow-outline">
+                                
+                                        <button type="button" class="text-sm bg-red-500 hover:bg-red-700 text-white py-1 px-2 rounded focus:outline-none focus:shadow-outline delete-Task">
                                             Delete
                                         </button>
                                     @endif
