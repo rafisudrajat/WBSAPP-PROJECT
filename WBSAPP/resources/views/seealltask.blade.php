@@ -49,16 +49,19 @@
                             </td>
                             <td >
                                 <div class='flex flex-col place-content-center gap-y-1'>
-
                                     @if ($gen_role=='Admin' || $task_maker[$i]==session('UserLogged') || in_array(1,$spec_role, TRUE) )
-                                        <button type="button" class="text-sm bg-blue-500 hover:bg-blue-700 text-white py-1 px-2 rounded focus:outline-none focus:shadow-outline edit-Task">
-                                            Edit
-                                        </button>
-                                
-                                        <button type="button" class="text-sm bg-red-500 hover:bg-red-700 text-white py-1 px-2 rounded focus:outline-none focus:shadow-outline delete-Task">
-                                            Delete
-                                        </button>
+                                        <form action="/editTask" method="post">
+                                            <button type="button" id="Edit-Task{{$gitlab_id[$i]}}"  class="text-sm bg-blue-500 hover:bg-blue-700 text-white py-1 px-2 rounded focus:outline-none focus:shadow-outline editTask">
+                                                Edit
+                                            </button>
+                                        </form>
+                                        <form action="/deleteTask" method="post">
+                                            <button type="button" id="Delete-Task{{$gitlab_id[$i]}}" class="text-sm bg-red-500 hover:bg-red-700 text-white py-1 px-2 rounded focus:outline-none focus:shadow-outline deleteTask">
+                                                Delete
+                                            </button>
+                                        </form>
                                     @endif
+
                                 </div>
                             </td>
                         </tr>
@@ -74,24 +77,68 @@
                         Add New Task
                     </button>
                 </form>
-
             </div>
         </div>
     </div>
 @include('Modals.taskFormAdmin')
+@include('Modals.editTask')
+@include('Modals.ensureDeleteTask')
 
 <script type="text/javascript">
     window.addEventListener('DOMContentLoaded', () =>{
         const overlay = document.querySelector('#overlay')
+        const overlayEditTask = document.querySelector('#overlayEditTask')
+        const overlayDeleteTask = document.querySelector('#overlayDeleteTask')
+        
         const AddTask = document.querySelector('#Add-Task')
+        const EditTask = document.getElementsByClassName("editTask")
+        const DeleteTask = document.getElementsByClassName("deleteTask")
+        
         const closeBtn = document.querySelector('#close-modal')
+        const closeBtn2 = document.querySelector('#close-editTask')
+        const closeBtn3 = document.querySelector('#cancel-Btn')
 
         const toggleModal = () => {
                 overlay.classList.toggle('hidden')
                 overlay.classList.toggle('flex')
         }
+
+        const toggleModal2 = () => {
+                overlayEditTask.classList.toggle('hidden')
+                overlayEditTask.classList.toggle('flex')
+        }
+        
+        const toggleModal3 = () => {
+                overlayDeleteTask.classList.toggle('hidden')
+                overlayDeleteTask.classList.toggle('flex')
+        }
+
+        for (let i = 0; i < EditTask.length; i++) {
+            let id=EditTask[i].id
+            id=parseInt(id.replace("Edit-Task",''))
+            EditTask[i].addEventListener('click', ()=>{
+            toggleModal2(id)
+            })
+        }
+
+        for (let i = 0; i < DeleteTask.length; i++) {
+            let id=DeleteTask[i].id
+            id=parseInt(id.replace("Delete-Task",''))
+            DeleteTask[i].addEventListener('click', ()=>{
+            toggleModal3(id)
+            })
+        }
+        
+        closeBtn2.addEventListener('click',()=>{
+            toggleModal2()
+        })
+        closeBtn3.addEventListener('click',()=>{
+            toggleModal3()
+        })
+
         AddTask.addEventListener('click', toggleModal)
         closeBtn.addEventListener('click', toggleModal)
     })
 </script>
+
 @endsection
