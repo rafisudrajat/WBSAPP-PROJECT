@@ -38,4 +38,8 @@ class User extends Authenticatable
     {
         return $this->hasMany(Task::class, 'exec_id');
     }
+    public function qc_tester()
+    {
+        return $this->hasMany(Task::class, 'qc_tester_id');
+    }
 }

@@ -8,31 +8,54 @@ use App\Models\Users_task;
 use App\Models\Users_specific_role;
 use App\Models\Task;
 use App\Models\Task_Category;
+use App\Models\Specific_role;
+use PhpParser\Node\Stmt\Foreach_;
 
 class TaskController extends Controller
 {
     public function index(Request $request)
     {
         // dd($request->all());
-        $users_id = Users_specific_role::where('project_id', $request->project_id)->get();
+
+        $all_users_id = Users_specific_role::where('project_id', $request->project_id)->get();
         $users_task = Users_task::where('project_id', $request->project_id)->get();
-        $ids_users = [];
-        foreach ($users_id as $id) {
-            array_push($ids_users, $id['user_id']);
+        $current_user = User::find($request->session()->get('UserLogged'));
+        $current_users_spec_role = Users_specific_role::where('user_id', $request->session()->get('UserLogged'))->where('project_id', $request->project_id)->get();
+        $current_spec_role_ids = [];
+        foreach ($current_users_spec_role as $csp_role) {
+            array_push($current_spec_role_ids, $csp_role->spec_role_id);
         }
+
+        $ids_users = [];
+        $qc_id = [];
+        foreach ($all_users_id as $id) {
+            array_push($ids_users, $id['user_id']);
+            if ($id['spec_role_id'] == 3)
+                array_push($qc_id, $id['user_id']);
+        }
+
         $task_id = [];
+        $task_maker = [];
         foreach ($users_task as $task) {
             array_push($task_id, $task['task_id']);
+            array_push($task_maker, $task['user_id']);
         }
 
         $users = User::whereIn('id', $ids_users)->get();
+        $all_qc = User::whereIn('id', $qc_id)->get();
         $tasks = Task::whereIn('id', $task_id)->get();
+
 
         $user_name = [];
         foreach ($users as $user) {
             array_push($user_name, $user['name']);
             // array_push($user_id, $user['id']);
         }
+        $qc_name = [];
+        foreach ($all_qc as $qc) {
+            array_push($qc_name, $qc['name']);
+        }
+
         $gitlab_ids = [];
         $task_categories_id = [];
         $task_names = [];
@@ -44,6 +67,9 @@ class TaskController extends Controller
         $stop_times = [];
         $progress = [];
         $prev_tasks = [];
+        $qc_testers_id = [];
+        $qc_testdate = [];
+        $qc_properness = [];
         $notes = [];
         foreach ($tasks as $task) {
             array_push($gitlab_ids, $task['gitlab_id']);
@@ -57,15 +83,20 @@ class TaskController extends Controller
             array_push($stop_times, $task['stop_time']);
             array_push($progress, $task['progress']);
             array_push($prev_tasks, $task['prev_task']);
+            array_push($qc_testers_id, $task['qc_tester_id']);
+            array_push($qc_testdate, $task['qc_testdate']);
+            array_push($qc_properness, $task['qc_properness']);
             array_push($notes, $task['notes']);
         }
         $task_categories = [];
         $pics = [];
         $task_executors = [];
+        $qc_testers = [];
         for ($i = 0; $i < count($task_categories_id); $i++) {
             array_push($task_categories, Task_Category::find($task_categories_id[$i])->task_category_name);
             array_push($pics, User::find($pics_id[$i])->name);
             array_push($task_executors, User::find($task_executors_id[$i])->name);
+            array_push($qc_testers, User::find($qc_testers_id[$i])->name);
         }
         // dd(Task_Category::all()->toArray());
         $task_cat_list = Task_Category::all()->toArray();
@@ -75,9 +106,13 @@ class TaskController extends Controller
         }
         $data = [
             'title' => 'Task',
+            'gen_role' => $current_user->general_role,
+            'spec_role' => $current_spec_role_ids,
             'project_id' => $request->project_id,
             'name_lists' => $user_name,
+            'qc_lists' => $qc_name,
             'task_cat_lists' => $task_cat_choice,
+            "task_maker" => $task_maker,
             "gitlab_id" => $gitlab_ids,
             "task_cat_id" => $task_categories,
             "task_name" => $task_names,
@@ -89,6 +124,9 @@ class TaskController extends Controller
             "stop_time" => $stop_times,
             "progress" => $progress,
             "prev_task" => $prev_tasks,
+            "qc_tester" => $qc_testers,
+            "qc_testdate" => $qc_testdate,
+            "qc_properness" => $qc_properness,
             "notes" => $notes
         ];
         return view('seealltask', $data);
@@ -104,6 +142,7 @@ class TaskController extends Controller
         // ]);
         $pic_id = (User::where('name', $request['pic-id'])->first())['id'];
         $task_exec_id = (User::where('name', $request['task_exec_id'])->first())['id'];
+        // $list_task
         $Task = new Task();
         $Task->gitlab_id = $request['gitlab-ID'];
         $Task->progress = $request['progress'];
@@ -116,6 +155,10 @@ class TaskController extends Controller
         $Task->start_time = $request['start-time'];
         $Task->stop_time = $request['stop-time'];
         $Task->notes = $request['notes'];
+        $Task->qc_tester_id = (User::where('name', $request['qc_tester_name'])->first())['id'];
+        $Task->qc_testdate = $request['qc_test_date'];
+        $Task->qc_properness = $request['qc_properness'];
+
         // $spec_role = Specific_role::firstOrCreate([
         //     'spec_role_name' => $request->general_input
         // ]);

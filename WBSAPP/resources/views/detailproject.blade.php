@@ -71,16 +71,12 @@
         </div>
       
         <div class="flex flex-row items-center" >
-            @if ($creator_id==session('UserLogged'))
-                <div class="flex-grow ">
-                    <form action="/seeTask" method="GET">
-                        <input type="hidden" name="project_id" value="{{$project_id}}">
-                        <button type="submit" class="underline">See All Progress</button>
-                    </form>
-                </div>
-            @else
-                <div class="flex-grow"></div>
-            @endif
+            <div class="flex-grow ">
+                <form action="/seeTask" method="GET">
+                    <input type="hidden" name="project_id" value="{{$project_id}}">
+                    <button type="submit" class="underline">See All Progress</button>
+                </form>
+            </div>
             <div class="flex justify-end mt-4">
                 <div class="flex flex-col">
                     <div class="flex items-center justify-between overflow-auto w-56 mt-2" id="style-10">
@@ -201,7 +197,6 @@
                     document.getElementById('identifier').value=id
                     // Add DropDown
                     change2Dropdown('/queryRole')
-                    
                 })
             }
           
