@@ -49,23 +49,18 @@
                             </td>
                             <td >
                                 <div class='flex flex-col place-content-center gap-y-1'>
-
                                     @if ($gen_role=='Admin' || $task_maker[$i]==session('UserLogged') || in_array(1,$spec_role, TRUE) )
                                         <form action="/editTask" method="post">
-                                            <input type="hidden" name="task_id" value="{{$task_id}}">
-                                            <button type="button" id="Edit-Task{{$gitlab_id[$i]}}"  class="text-sm bg-blue-500 hover:bg-blue-700 text-white py-1 px-2 rounded focus:outline-none focus:shadow-outline editTask">
+                                            <button type="button" id="Edit-Task{{$task_id[$i]}}"  class="text-sm bg-blue-500 hover:bg-blue-700 text-white py-1 px-2 rounded focus:outline-none focus:shadow-outline editTask">
                                                 Edit
                                             </button>
                                         </form>
                                         <form action="/deleteTask" method="post">
-                                            <input type="hidden" name="task_id" value="{{$task_id}}">
-                                            <button type="button" id="Delete-Task{{$gitlab_id[$i]}}" class="text-sm bg-red-500 hover:bg-red-700 text-white py-1 px-2 rounded focus:outline-none focus:shadow-outline deleteTask">
+                                            <button type="button" id="Delete-Task{{$task_id[$i]}}" class="text-sm bg-red-500 hover:bg-red-700 text-white py-1 px-2 rounded focus:outline-none focus:shadow-outline deleteTask">
                                                 Delete
                                             </button>
                                         </form>
                                     @endif
-
-
                                 </div>
                             </td>
                         </tr>
@@ -114,21 +109,51 @@
                 overlay.classList.toggle('flex')
         }
 
-        const toggleModal2 = () => {
+        const toggleModal2 = (idx=0) => {
                 overlayEditTask.classList.toggle('hidden')
                 overlayEditTask.classList.toggle('flex')
+                console.log(idx)
+                document.getElementById('task_id').value=idx
         }
         
-        const toggleModal3 = () => {
+        const toggleModal3 = (idx=0) => {
                 overlayDeleteTask.classList.toggle('hidden')
                 overlayDeleteTask.classList.toggle('flex')
+                document.getElementById('id2Delete').value=idx
         }
-
+        const getTask =(input)=>{
+            $.ajax(
+                {
+                    type : 'GET',
+                    url : '/queryTask',
+                    data:{'key':input},
+                    success: (data)=>{ 
+                        $('#gitlab-ID-Edit').val(data.gitlab_id)
+                        $('#task_category-Edit').val(data.task_cat_name)
+                        $('#progress-Edit').val(data.progress)
+                        $('#gitlab-ID-Edit').val(data.gitlab_id)
+                        $('#task-name-Edit').val(data.task_name)
+                        $('#pic-id-Edit').val(data.pic_name)
+                        $('#task_exec_id-Edit').val(data.exec_name)
+                        $('#prev-task-Edit').val(data.prev_task)
+                        $('#start-date-Edit').val(data.start_date)
+                        $('#due-date-Edit').val(data.due_date)
+                        $('#start-time-Edit').val(data.start_time)
+                        $('#stop-time-Edit').val(data.stop_time)
+                        $('#qc_test_date').val(data.qc_testdate)
+                        $('#qc_tester_name-Edit').val(data.qc_name)
+                        $('#qc_properness-Edit').val(data.qc_properness)
+                        $('#notes-Edit').val(data.notes)
+                        // console.log(data)
+                    }
+                })
+        }
         for (let i = 0; i < EditTask.length; i++) {
             let id=EditTask[i].id
             id=parseInt(id.replace("Edit-Task",''))
             EditTask[i].addEventListener('click', ()=>{
-            toggleModal2(id)
+               getTask(id)
+               toggleModal2(id)
             })
         }
 
@@ -136,7 +161,8 @@
             let id=DeleteTask[i].id
             id=parseInt(id.replace("Delete-Task",''))
             DeleteTask[i].addEventListener('click', ()=>{
-            toggleModal3(id)
+                // console.log(id)
+                toggleModal3(id)
             })
         }
         

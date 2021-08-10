@@ -112,6 +112,7 @@ class TaskController extends Controller
             'qc_lists' => $qc_name,
             'task_cat_lists' => $task_cat_choice,
             "task_maker" => $task_maker,
+            "task_id" => $task_id,
             "gitlab_id" => $gitlab_ids,
             "task_cat_id" => $task_categories,
             "task_name" => $task_names,
@@ -179,25 +180,54 @@ class TaskController extends Controller
         }
     }
 
-    // PAsti ERROR
-    public function updateTask(Request $request)
+    public function queryTask2Edit(Request $request)
     {
-        $output = "<input list='roles' name='general_input' class='change-input'>" .
-            "<datalist id='roles'>";
         if ($request->ajax()) {
-            $allTask = task::all();
-            foreach ($allTask as $task) {
-                $output .= "<option value='$role->spec_role_name'></option>";
-            }
-            $output .= "</datalist>";
+            $task = Task::find($request->key)->toArray();
+            $task['task_cat_name'] = Task_Category::find($task['task_cat_id'])->task_category_name;
+            $task['pic_name'] = User::find($task['pic_id'])->name;
+            $task['exec_name'] = User::find($task['exec_id'])->name;
+            $task['qc_name'] = User::find($task['qc_tester_id'])->name;
+            return Response($task);
         }
-        return Response($output);
     }
 
     public function deleteTask(Request $request)
     {
-        $delete = Task::find($task_id)->delete();
+        // dd($request->all());
+        $delete = Task::find($request->id2Delete)->delete();
         if ($delete) {
+            return back()->with('success', 'Your task has been deleted');
+        } else {
+            return back()->with('fail', 'Something went wrong, please try again later');
+        }
+    }
+    public function updateTask(Request $request)
+    {
+        // dd($request->all());
+        $pic_id = (User::where('name', $request['pic-id-Edit'])->first())['id'];
+        $task_exec_id = (User::where('name', $request['task_exec_id-Edit'])->first())['id'];
+        $task2Edit = Task::find($request->task_id);
+        $task2Edit->gitlab_id = $request['gitlab-ID-Edit'];
+        $task2Edit->progress = $request['progress-Edit'];
+        $task2Edit->task_name = $request['task-name-Edit'];
+        $task2Edit->pic_id = $pic_id;
+        $task2Edit->exec_id = $task_exec_id;
+        $task2Edit->prev_task = $request['prev-task-Edit'];
+        $task2Edit->start_date = $request['start-date-Edit'];
+        $task2Edit->due_date = $request['due-date-Edit'];
+        $task2Edit->start_time = $request['start-time-Edit'];
+        $task2Edit->stop_time = $request['stop-time-Edit'];
+        $task2Edit->notes = $request['notes-Edit'];
+        $task2Edit->qc_tester_id = (User::where('name', $request['qc_tester_name-Edit'])->first())['id'];
+        $task2Edit->qc_testdate = $request['qc_test_date-Edit'];
+        $task2Edit->qc_properness = $request['qc_properness-Edit'];
+        $task_cat = Task_Category::firstOrCreate([
+            'task_category_name' => $request['task_category-Edit']
+        ]);
+        $task2Edit->task_cat_id = $task_cat['id'];
+        $save = $task2Edit->save();
+        if ($save) {
             return back()->with('success', 'Your task has been deleted');
         } else {
             return back()->with('fail', 'Something went wrong, please try again later');

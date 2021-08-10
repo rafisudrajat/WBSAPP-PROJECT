@@ -18,17 +18,18 @@
 
             <div id="converters-area" class="px-4 py-5">
                 <div class="flex flex-col text-gray-500">
-                    <form action="/editTask" method="POST" autocomplete="off">
+                    <form action="/updateTask" method="POST" autocomplete="off">
                         @csrf
                         <input type="hidden" name="project_id" value="{{$project_id}}">
+                        <input type="hidden" name="task_id" id="task_id" value="">
                         <div class="flex items-center justify-between mb-5">
                             <div class="flex flex-col text-center w-1/6 px-2">
-                                <label class="mb-1" for="gitlab-ID">Gitlab ID</label>
-                                <input type="number" id="gitlab-ID" name="gitlab-ID" class="px-5 rounded focus:outline-none text-gray-600 focus:text-gray-600" />
+                                <label class="mb-1" for="gitlab-ID-Edit">Gitlab ID</label>
+                                <input type="number" id="gitlab-ID-Edit" name="gitlab-ID-Edit" class="px-5 rounded focus:outline-none text-gray-600 focus:text-gray-600" />
                             </div>
                             <div class="flex flex-col text-center w-4/6 px-2">
-                                <label class="mb-1" for="task_category">Task Category</label>
-                                <input list="task_categories" id="task_category" name="task_category" class="pl-3 rounded focus:outline-none text-gray-600 focus:text-gray-600" />
+                                <label class="mb-1" for="task_category-Edit">Task Category</label>
+                                <input list="task_categories" id="task_category-Edit" name="task_category-Edit" class="pl-3 rounded focus:outline-none text-gray-600 focus:text-gray-600" />
                                 <datalist id="task_categories">
                                     {{-- TASK CATEGORY OPTIONS --}}
                                     @foreach ($task_cat_lists as $task_cat)
@@ -37,18 +38,18 @@
                                 </datalist>
                             </div>
                             <div class="flex flex-col text-center w-1/6 px-2">
-                                <label class="mb-1" for="progress">Progress</label>
-                                <input type="number" id="progress" name="progress" max="100" min="0" class="px-5 rounded focus:outline-none text-gray-600 focus:text-gray-600" />
+                                <label class="mb-1" for="progress-Edit">Progress</label>
+                                <input type="number" id="progress-Edit" name="progress-Edit" max="100" min="0" class="px-5 rounded focus:outline-none text-gray-600 focus:text-gray-600" />
                             </div>
                         </div>
                         <div class="flex items-center justify-between mb-5">
                             <div class="flex flex-col text-center w-1/2 px-2">
-                                <label class="mb-1" for="task-name">Task Name</label>
-                                <input type="text" id="task-name" name="task-name" class="px-5 rounded focus:outline-none text-gray-600 focus:text-gray-600" />
+                                <label class="mb-1" for="task-name-Edit">Task Name</label>
+                                <input type="text" id="task-name-Edit" name="task-name-Edit" class="px-5 rounded focus:outline-none text-gray-600 focus:text-gray-600" />
                             </div>
                             <div class="flex flex-col text-center w-1/2 px-2">
-                                <label class="mb-1" for="pic-id">PIC</label>
-                                <input list="pic_ids" id="pic-id" name="pic-id" class="pl-3 rounded focus:outline-none text-gray-600 focus:text-gray-600" />
+                                <label class="mb-1" for="pic-id-Edit">PIC</label>
+                                <input list="pic_ids" id="pic-id-Edit" name="pic-id-Edit" class="pl-3 rounded focus:outline-none text-gray-600 focus:text-gray-600" />
                                 <datalist id="pic_ids">
                                     {{-- PIC OPTIONS --}}
                                     @foreach ($name_lists as $name)
@@ -59,8 +60,8 @@
                         </div>
                         <div class="flex items-center justify-between mb-5">
                             <div class="flex flex-col text-center w-1/2 px-2">
-                                <label class="mb-1" for="task_exec_id">Task Executor</label>
-                                <input list="executors" id="task_exec_id" name="task_exec_id" class="pl-3 rounded focus:outline-none text-gray-600 focus:text-gray-600" />
+                                <label class="mb-1" for="task_exec_id-Edit">Task Executor</label>
+                                <input list="executors" id="task_exec_id-Edit" name="task_exec_id-Edit" class="pl-3 rounded focus:outline-none text-gray-600 focus:text-gray-600" />
                                 <datalist id="executors">
                                     {{-- TASK Executor OPTIONS --}}
                                     @foreach ($name_lists as $name)
@@ -69,34 +70,55 @@
                                 </datalist>
                             </div>
                             <div class="flex flex-col text-center w-1/2 px-2">
-                                <label class="mb-1" for="prev-task">Previous Task</label>
-                                <input type="text" id="prev-task" name="prev-task" class="px-5 rounded focus:outline-none text-gray-600 focus:text-gray-600" />
+                                <label class="mb-1" for="prev-task-Edit">Previous Task</label>
+                                <input type="text" id="prev-task-Edit" name="prev-task-Edit" class="px-5 rounded focus:outline-none text-gray-600 focus:text-gray-600" value="cok" />
                             </div>
                         </div>
                         <div class="flex items-center justify-between mb-5">
                             <div class="flex flex-col text-center w-1/2 px-2">
-                                <label class="mb-1" for="start-date">Start Date</label>
-                                <input type="date" id="start-date" name="start-date" class="px-5 rounded focus:outline-none text-gray-600 focus:text-gray-600" />
+                                <label class="mb-1" for="start-date-Edit">Start Date</label>
+                                <input type="date" id="start-date-Edit" name="start-date-Edit" class="px-5 rounded focus:outline-none text-gray-600 focus:text-gray-600" />
                             </div>
                             <div class="flex flex-col text-center w-1/2 px-2">
-                                <label class="mb-1" for="due-date">Due Date</label>
-                                <input type="date" id="due-date" name="due-date" class="px-5 rounded focus:outline-none text-gray-600 focus:text-gray-600" />
+                                <label class="mb-1" for="due-date-Edit">Due Date</label>
+                                <input type="date" id="due-date-Edit" name="due-date-Edit" class="px-5 rounded focus:outline-none text-gray-600 focus:text-gray-600" />
                             </div>
                         </div>
                         <div class="flex items-center justify-between mb-5">
                             <div class="flex flex-col text-center w-1/2 px-2">
-                                <label class="mb-1" for="start-time">Start Time</label>
-                                <input type="time" id="start-time" name="start-time" class="px-5 rounded focus:outline-none text-gray-600 focus:text-gray-600" />
+                                <label class="mb-1" for="start-time-Edit">Start Time</label>
+                                <input type="time" id="start-time-Edit" name="start-time-Edit" class="px-5 rounded focus:outline-none text-gray-600 focus:text-gray-600" />
                             </div>
                             <div class="flex flex-col text-center w-1/2 px-2">
-                                <label class="mb-1" for="stop-time">Stop Time</label>
-                                <input type="time" id="stop-time" name="stop-time" class="px-5 rounded focus:outline-none text-gray-600 focus:text-gray-600" />
+                                <label class="mb-1" for="stop-time-Edit">Stop Time</label>
+                                <input type="time" id="stop-time-Edit" name="stop-time-Edit" class="px-5 rounded focus:outline-none text-gray-600 focus:text-gray-600" />
+                            </div>
+                        </div>
+                         {{-- QC --}}
+                         <div class="flex items-center justify-between mb-5">
+                            <div class="flex flex-col text-center w-4/12 px-2">
+                                <label class="mb-1" for="qc_test_date-Edit">QC Test Date</label>
+                                <input type="date" id="qc_test_date-Edit" name="qc_test_date-Edit" class="px-5 rounded focus:outline-none text-gray-600 focus:text-gray-600" />
+                            </div>
+                            <div class="flex flex-col text-center w-5/12 px-2">
+                                <label class="mb-1" for="qc_tester_name-Edit">QC Tester</label>
+                                <input list="qc_testers" id="qc_tester_name-Edit" name="qc_tester_name-Edit" class="pl-3 rounded focus:outline-none text-gray-600 focus:text-gray-600" />
+                                <datalist id="qc_testers">
+                                    {{-- QC Tester OPTIONS --}}
+                                    @foreach ($qc_lists as $qc)
+                                        <option value="{{$qc}}"></option>
+                                    @endforeach
+                                </datalist>
+                            </div>
+                            <div class="flex flex-col text-center w-3/12 px-2">
+                                <label class="mb-1" for="qc_properness-Edit">QC Properness</label>
+                                <input type="text" id="qc_properness-Edit" name="qc_properness-Edit" class="px-5 rounded focus:outline-none text-gray-600 focus:text-gray-600" />
                             </div>
                         </div>
                         <div class="flex items-center justify-between mb-5">
                             <div class="flex flex-col text-center w-full px-2">
-                                <label class="mb-1" for="notes">Notes</label>
-                                <textarea name="notes" id="notes"  rows="5" class="px-5 rounded focus:outline-none text-gray-600 focus:text-gray-600"></textarea>
+                                <label class="mb-1" for="notes-Edit">Notes</label>
+                                <textarea name="notes-Edit" id="notes-Edit"  rows="5" class="px-5 rounded focus:outline-none text-gray-600 focus:text-gray-600"></textarea>
                                 {{-- <input type="textarea" id="notes" name="notes" class="resize h-20 px-5 rounded focus:outline-none text-gray-600 focus:text-gray-600" /> --}}
                             </div>
                         </div>  
